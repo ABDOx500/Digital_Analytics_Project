@@ -13,7 +13,7 @@ WITH purchase_events AS (
     -- Use the event_sk as a proxy for a unique order line item
     event_sk
   FROM
-    {{ ref('my_first_dbt_model') }}
+    {{ ref('Star_Schema') }}
   WHERE
     is_purchase = true
 )

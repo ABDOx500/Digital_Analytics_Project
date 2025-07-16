@@ -9,7 +9,7 @@ SELECT
     event_date,
     COUNT(DISTINCT user_name) AS daily_active_users
 FROM
-    {{ ref('my_first_dbt_model') }}
+    {{ ref('Star_Schema') }}
 GROUP BY
     event_date
 ORDER BY
