@@ -1,6 +1,20 @@
+/*
+  This is a final KPI model. It calculates total sales for each brand.
+  It reads from the pre-joined 'my_first_dbt_model'.
+*/
 
--- Use the `ref` function to select from other models
+{{ config(materialized='table') }}
 
-select *
-from {{ ref('my_first_dbt_model') }}
-where id = 1
+SELECT
+    brand,
+    SUM(price) as total_sales,
+    COUNT(event_sk) as total_purchases
+FROM
+    -- This ref() function is the link to your first model!
+    {{ ref('my_first_dbt_model') }}
+WHERE
+    is_purchase = true
+GROUP BY
+    brand
+ORDER BY
+    total_sales DESC
