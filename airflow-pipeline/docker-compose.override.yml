@@ -1,0 +1,13 @@
+        version: '3'
+        services:
+          scheduler:
+            volumes:
+              - D:\dbt-user-creds.json:ro
+          webserver:
+            volumes:
+              - D:\dbt-user-creds.json:ro
+          triggerer:
+            volumes:
+              - D:\dbt-user-creds.json:ro
+              
+        
