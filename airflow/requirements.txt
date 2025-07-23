@@ -1,0 +1,10 @@
+# requirements.txt
+
+# For the Python ETL script
+pandas
+google-cloud-bigquery
+gcsfs
+pyarrow
+
+# For dbt to connect to BigQuery
+dbt-bigquery==1.7.2
