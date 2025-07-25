@@ -22,9 +22,9 @@ from google.cloud import bigquery
 import pandas as pd
 
 # Configuration
-GCS_BUCKET_NAME = "star_shcema"  # Your GCS bucket name
-BIGQUERY_DATASET = "Nov_star_sample"  # Your source dataset
-BIGQUERY_PROJECT = "digital-analytics-464705"  # Your GCP project ID
+GCS_BUCKET_NAME = "star_shcema"  # GCS bucket name
+BIGQUERY_DATASET = "Nov_star_sample"  # source dataset
+BIGQUERY_PROJECT = "digital-analytics-464705"  # GCP project ID
 
 # Paths (container paths)
 ETL_SCRIPTS_DIR = "/opt/airflow/etl_scripts"

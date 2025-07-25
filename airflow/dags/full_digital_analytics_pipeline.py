@@ -3,15 +3,14 @@ import pendulum
 from airflow.models.dag import DAG
 from airflow.operators.bash import BashOperator
 
-# These paths point to the locations inside the Airflow container,
-# as defined by the volumes in your docker-compose.yaml file.
+
 DBT_PROJECT_DIR = "/opt/airflow/dbt_project"
 ETL_SCRIPT_PATH = "/opt/airflow/etl_scripts/main_etl_pipeline.py"
 
 with DAG(
     dag_id="full_digital_analytics_pipeline",
     start_date=pendulum.datetime(2025, 7, 25, tz="UTC"),
-    schedule=None,  # Manual trigger for now, change to "@daily" when ready
+    schedule=None,  # Manual trigger 
     catchup=False,
     tags=["ecommerce", "dbt", "production", "gcp", "bigquery"],
     doc_md="""
