@@ -1,0 +1,24 @@
+default:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: service-account
+      project: digital-analytics-464705  
+      dataset: dbt_aezzari  
+      threads: 4
+      timeout_seconds: 300
+      location: africa-south1
+      priority: interactive
+      keyfile: /opt/airflow/dbt-user-creds.json  
+      
+    prod:
+      type: bigquery
+      method: service-account
+      project: digital-analytics-464705  
+      dataset: dbt_aezzari_prod
+      threads: 8
+      timeout_seconds: 300
+      location: africa-south1
+      priority: batch
+      keyfile: /opt/airflow/dbt-user-creds.json 

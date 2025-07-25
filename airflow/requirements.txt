@@ -1,0 +1,20 @@
+# requirements.txt
+
+# For the Python ETL script
+pandas
+numpy
+matplotlib
+faker
+pyarrow
+
+# Google Cloud Platform dependencies
+google-cloud-bigquery>=3.0.0
+google-cloud-storage>=2.0.0
+gcsfs
+
+# For dbt to connect to BigQuery
+dbt-bigquery==1.7.2
+
+# Fix Redis client compatibility with Celery
+redis>=4.5.0,<5.0.0
+kombu>=5.3.0
