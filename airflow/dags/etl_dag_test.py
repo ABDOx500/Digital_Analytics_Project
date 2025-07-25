@@ -4,15 +4,15 @@ from airflow.models.dag import DAG
 from airflow.operators.bash import BashOperator
 
 
-CLEANING_SCRIPT_PATH = "D:/Intership_Berexia/Digital_Analytics_Project/airflow/etl-scripts/November.py"
-MODELING_SCRIPT_PATH = "D:/Intership_Berexia/Digital_Analytics_Project/airflow/etl-scripts/Star_Schema/Star_Schema.py"
+CLEANING_SCRIPT_PATH = "/opt/airflow/etl_scripts/November.py"
+MODELING_SCRIPT_PATH = "/opt/airflow/etl_scripts/Star_Schema/Star_Schema.py"
 
 with DAG(
-    dag_id="1_python_etl_and_star_schema",
+    dag_id="1_local_etl_development",
     start_date=pendulum.datetime(2025, 7, 23, tz="UTC"),
     schedule=None,
     catchup=False,
-    tags=["etl", "python"],
+    tags=["etl", "python", "local", "development"],
     doc_md="""
     ### ETL and Star Schema Pipeline
     

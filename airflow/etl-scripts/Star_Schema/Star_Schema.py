@@ -4,11 +4,10 @@ from faker import Faker
 import os
 
 # --- CONFIGURATION ---------------------------------------------------------------
-# These paths are placeholders and should be managed by your orchestrator (Airflow)
-# For local testing, you can adjust them.
-# In the Docker container, these paths will be relative to the container's filesystem.
-IN_CSV = "D:/Intership_Berexia/Digital_Analytics_Project/airflow/etl-scripts/Cleaned data/Cleaned_Nov.csv"
-OUT_DIR = "D:/Intership_Berexia/Digital_Analytics_Project/airflow/etl-scripts/Star_Schema"
+# These paths are configured for the Docker container environment
+# Airflow will execute this script inside the container where volumes are mounted
+IN_CSV = "/opt/airflow/etl_scripts/Cleaned data/Cleaned_Nov.csv"
+OUT_DIR = "/opt/airflow/etl_scripts/Star_Schema"
 
 def create_dim_date(df):
     """Creates the date dimension from the event_time column."""

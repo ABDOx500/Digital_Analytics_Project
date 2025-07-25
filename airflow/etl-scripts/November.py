@@ -1,12 +1,13 @@
 # 0️⃣ Imports & settings
 import pandas as pd
 import numpy as np
-import pandas as pd
+import matplotlib
+matplotlib.use('Agg')  # Use non-interactive backend for containers
 import matplotlib.pyplot as plt
 pd.set_option("display.max_columns", 120)
 
-INPUT_PATH  = "D:/Intership_Berexia/Digital_Analytics_Project/airflow/etl-scripts/sample_Nov.csv"
-CSV_OUT     = "D:/Intership_Berexia/Digital_Analytics_Project/airflow/etl-scripts"
+INPUT_PATH  = "/opt/airflow/etl_scripts/sample_Nov.csv"
+CSV_OUT     = "/opt/airflow/etl_scripts/Cleaned data/Cleaned_Nov.csv"
 
 # 2️⃣ Missing Values per Column
 df = pd.read_csv(INPUT_PATH, parse_dates=["event_time"], low_memory=False)
@@ -14,47 +15,38 @@ print("Rows:", len(df))
 df.info()
 
 # basic stats
-display(df.describe().T)
-plt.figure()
-df.isna().sum().plot(kind="bar")
-plt.title("Missing Values per Column")
-plt.xlabel("Column")
-plt.ylabel("Count")
-plt.tight_layout()
-plt.show()
+print("Data description:")
+print(df.describe().T)
+print("\nMissing values per column:")
+print(df.isna().sum())
+# Skip visualization for ETL pipeline - focus on data processing
 
 # Identify all numeric columns in the cleaned DataFrame
 num_cols = df.select_dtypes(include=["number"]).columns
 
-# Plot histograms for each numeric column to see their distributions
-plt.figure()
-df[num_cols].hist(bins=30)
-plt.suptitle("Histogram of Numerical Features")
-plt.tight_layout()
-plt.show()
+# Analyze numeric column distributions (skip plotting for ETL)
+print("Numeric columns identified:", list(num_cols))
+print("Basic statistics for numeric columns:")
+print(df[num_cols].describe())
 
 
 # Compute counts for each event type
 event_counts = df['event_type'].value_counts()
 
-# Plot as a simple bar chart
-plt.figure()
-event_counts.plot(kind='bar')
-plt.title("Counts of Each Event Type")
-plt.xlabel("Event Type")
-plt.ylabel("Frequency")
-plt.xticks(rotation=0)
-plt.tight_layout()
-plt.show()
+# Event type analysis (without plotting for ETL)
+print("Event type counts:")
+print(event_counts)
 
 # null counts
 nulls = df.isna().sum().sort_values(ascending=False)
-display(nulls[nulls>0])
+print("Columns with missing values:")
+print(nulls[nulls>0])
 
 # cardinality check for object / category columns
 cat_cols = [c for c in df.columns if df[c].dtype=="object"]
 card = {c: df[c].nunique() for c in cat_cols}
-display(pd.Series(card).sort_values(ascending=False))
+print("Cardinality for categorical columns:")
+print(pd.Series(card).sort_values(ascending=False))
 
 
 # expected types for key columns – adjust to match your schema
@@ -96,13 +88,8 @@ for col in df.columns:
         else:
             df[col] = df[col].fillna("unknown")
 #after cleaning
-plt.figure()
-df.isna().sum().plot(kind="bar")
-plt.title("Missing Values per Column")
-plt.xlabel("Column")
-plt.ylabel("Count")
-plt.tight_layout()
-plt.show()
+print("Missing values after cleaning:")
+print(df.isna().sum())
 
 # keep last event per session as example business rule
 if "session_id" in df.columns:
@@ -117,15 +104,9 @@ if "quantity" in df.columns:
 # Compute correlation matrix for numeric fields
 corr = df[num_cols].corr()
 
-# Display the correlation matrix as a heatmap
-plt.figure(figsize=(6, 5))
-plt.imshow(corr, aspect="auto", cmap="viridis")
-plt.colorbar(label="Correlation")
-plt.title("Correlation Matrix")
-plt.xticks(range(len(num_cols)), num_cols, rotation=45)
-plt.yticks(range(len(num_cols)), num_cols)
-plt.tight_layout()
-plt.show()
+# Compute correlation matrix (skip visualization for ETL)
+print("Correlation matrix computed for numeric columns")
+print("Correlation matrix shape:", corr.shape)
 
 
 print(df.columns.tolist())
@@ -156,53 +137,28 @@ import matplotlib.pyplot as plt
 # Count True/False in the 'is_purchase' feature
 purchase_counts = df['is_purchase'].value_counts()
 
-plt.figure()
-purchase_counts.plot(kind='bar', color=['gray','blue'])
-plt.title("Distribution of Purchases vs Non-Purchases")
-plt.xlabel("Is Purchase")
-plt.ylabel("Event Count")
-plt.xticks([0,1], ['No', 'Yes'], rotation=0)
-plt.tight_layout()
-plt.show()
-
+# Purchase analysis (skip plotting for ETL)
+print("Purchase analysis completed")
+print("Purchase distribution:", purchase_counts.to_dict())
 
 # ─── Events by Hour of Day ───────────────────────────────────────────────
-# Bar chart of event volume across each hour to see daily traffic patterns
-plt.figure()
-df['hour_of_day'].value_counts().sort_index().plot(kind='bar')
-plt.title("Events by Hour of Day")
-plt.xlabel("Hour (0–23)")
-plt.ylabel("Number of Events")
-plt.tight_layout()
-plt.show()
-
+# Analyze event volume across hours (skip plotting for ETL)
+hourly_events = df['hour_of_day'].value_counts().sort_index()
+print("Events by hour distribution completed")
 
 # ─── Purchase Rate by Hour of Day ────────────────────────────────────────
-# Line plot of the proportion of events that are purchases, by hour
+# Calculate hourly purchase rate (skip plotting for ETL)
 hourly = df.groupby('hour_of_day')['is_purchase'].mean()
-
-plt.figure()
-hourly.plot(marker='o')
-plt.title("Hourly Purchase Rate")
-plt.xlabel("Hour of Day")
-plt.ylabel("Purchase Rate")
-plt.xticks(range(0,24))
-plt.tight_layout()
-plt.show()
+print("Hourly purchase rate analysis completed")
 
 
 # ─── Weekend vs Weekday Event Counts ────────────────────────────────────
 # Compare total events on weekends vs weekdays
 counts = df['is_weekend'].value_counts()
 
-plt.figure()
-counts.plot(kind='bar', color=['green','orange'])
-plt.title("Event Count: Weekday vs Weekend")
-plt.xlabel("Is Weekend")
-plt.ylabel("Number of Events")
-plt.xticks([0,1], ['Weekday','Weekend'], rotation=0)
-plt.tight_layout()
-plt.show()
+# Weekend vs weekday analysis (skip plotting for ETL)
+print("Weekend vs weekday event counts:")
+print(counts)
 
 
 assert df["price"].min() >= 0, "Negative prices detected!"

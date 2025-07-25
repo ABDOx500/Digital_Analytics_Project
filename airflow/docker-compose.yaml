@@ -58,7 +58,7 @@ x-airflow-common:
     AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
     AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
     AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
-    GOOGLE_APPLICATION_CREDENTIALS: ${GOOGLE_APPLICATION_CREDENTIALS}
+    GOOGLE_APPLICATION_CREDENTIALS: /opt/airflow/dbt-user-creds.json
     AIRFLOW__CORE__FERNET_KEY: ''
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
     AIRFLOW__CORE__LOAD_EXAMPLES: 'true'
@@ -79,8 +79,8 @@ x-airflow-common:
     - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
     - ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow/plugins
     # 2. ADD THESE TWO LINES TO MOUNT YOUR PROJECT CODE
-    - ./dbt_project:/opt/airflow/dbt_project
-    - ./etl_scripts:/opt/airflow/etl_scripts
+    - ./dbt-models:/opt/airflow/dbt_project
+    - ./etl-scripts:/opt/airflow/etl_scripts
     # 3. ADD THIS LINE TO MOUNT YOUR GCP CREDENTIALS
     - D:\dbt-user-creds.json:/opt/airflow/dbt-user-creds.json:ro
   user: "${AIRFLOW_UID:-50000}:0"
